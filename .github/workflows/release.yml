@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 env:
-  PROJECT_NAME: "modern-cpp-template"
+  PROJECT_NAME: "projecteuler"
   BUILD_TYPE: Release
 
 jobs:
