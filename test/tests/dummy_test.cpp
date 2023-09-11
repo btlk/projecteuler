@@ -1,11 +1,9 @@
-#include "project/tmp.hpp"
-
 #include <gtest/gtest.h>
 
-TEST(TmpAddTest, CheckValues)
+#include "projecteuler/projecteuler.h"
+
+TEST(DummyTest, DummyCase)
 {
-  ASSERT_EQ(tmp::add(1, 2), 3);
-  EXPECT_TRUE(true);
 }
 
 int main(int argc, char **argv)
