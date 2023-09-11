@@ -14,6 +14,6 @@ set(headers
 )
 
 file(GLOB test_sources
-  "tests/*.h"
-  "tests/*.cpp"
+  "test/tests/*.h"
+  "test/tests/*.cpp"
 )

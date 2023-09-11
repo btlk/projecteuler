@@ -4,6 +4,7 @@
 
 TEST(DummyTest, DummyCase)
 {
+  EXPECT_TRUE(true);
 }
 
 int main(int argc, char **argv)

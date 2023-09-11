@@ -12,7 +12,7 @@ project(
 verbose_message("Adding tests under ${CMAKE_PROJECT_NAME}Tests...")
 
 foreach(file ${test_sources})
-  string(REGEX REPLACE "(.*/)([a-zA-Z0-9_ ]+)(\.cpp)" "\\2" test_name ${file}) 
+  string(REGEX REPLACE "(.*/)([a-zA-Z0-9_ ]+)(\.cpp)" "\\2" test_name ${file})
   add_executable(${test_name}_Tests ${file})
 
   #
@@ -42,32 +42,27 @@ foreach(file ${test_sources})
     set(${CMAKE_PROJECT_NAME}_TEST_LIB ${CMAKE_PROJECT_NAME})
   endif()
 
-  if(${CMAKE_PROJECT_NAME}_USE_GTEST)
-    find_package(GTest REQUIRED)
+  include(FetchContent)
+  FetchContent_Declare(
+          googletest
+          GIT_REPOSITORY https://github.com/google/googletest.git
+          GIT_TAG        f8d7d77c06936315286eb55f8de22cd23c188571
+  )
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  FetchContent_MakeAvailable(googletest)
+  enable_testing()
 
-    if(${CMAKE_PROJECT_NAME}_USE_GOOGLE_MOCK)
-      set(GOOGLE_MOCK_LIBRARIES GTest::gmock GTest::gmock_main)
-    endif()
-
-    target_link_libraries(
-      ${test_name}_Tests
-      PUBLIC
-        GTest::GTest
-        GTest::Main
-        ${GOOGLE_MOCK_LIBRARIES}
-        ${${CMAKE_PROJECT_NAME}_TEST_LIB}
-    )
-  elseif(${CMAKE_PROJECT_NAME}_USE_CATCH2)
-    find_package(Catch2 REQUIRED)
-    target_link_libraries(
-      ${test_name}_Tests
-      PUBLIC
-        Catch2::Catch2
-        ${${CMAKE_PROJECT_NAME}_TEST_LIB}
-    )
-  else()
-    message(FATAL_ERROR "Unknown testing library. Please setup your desired unit testing library by using `target_link_libraries`.")  
+  if(${CMAKE_PROJECT_NAME}_USE_GOOGLE_MOCK)
+    set(GOOGLE_MOCK_LIBRARIES GTest::gmock GTest::gmock_main)
   endif()
+
+  target_link_libraries(
+    ${test_name}_Tests
+    PUBLIC
+      GTest::gtest_main
+      ${GOOGLE_MOCK_LIBRARIES}
+      ${${CMAKE_PROJECT_NAME}_TEST_LIB}
+  )
 
   #
   # Add the unit tests
